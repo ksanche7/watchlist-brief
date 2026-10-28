@@ -93,6 +93,9 @@ section { margin-bottom: 2rem; }
 .cal .t { font-weight: 700; color: var(--navy); }
 .cal .src { color: var(--muted); font-size: .85rem; }
 
+/* Tap targets: links are at least 44px tall */
+.tape .sym a, .items .h a, .items a.src, .cal a, footer a { display: inline-flex; align-items: center; min-height: 44px; }
+
 /* Changelog */
 .log { list-style: none; margin: 0; padding: 0; }
 .log li { background: var(--panel); border-radius: var(--radius); padding: .8rem .95rem; margin-bottom: .7rem; }
@@ -117,6 +120,7 @@ footer p { margin: .2rem 0; }
   .banner { border-left-color: #000; background: #fff; color: #000; }
   .wrap { max-width: none; padding: 0; }
   a { color: #000; text-decoration: none; }
+  .tape .sym a, .items .h a, .items a.src, .cal a, footer a { display: inline; min-height: 0; }
   .items .h a::after { content: " (" attr(href) ")"; font-size: 8.5pt; color: #444; }
   .co { break-inside: avoid; }
   #changelog, .no-print { display: none; }
@@ -167,107 +171,130 @@ footer p { margin: .2rem 0; }
 /* ===== DATA. The refresh-brief agent edits BRIEF and CHANGELOG only. ===== */
 
 const WATCHLIST = {
-  owner: "Your Name",
-  club: "SIBC",
+  owner: "Kevin",
+  club: "",
   repo: "",
   tickers: [
     { symbol: "NVDA", name: "NVIDIA", exchange: "NASDAQ", why: "The AI capex cycle in one ticker. If this moves, the whole list moves." },
     { symbol: "JPM",  name: "JPMorgan Chase", exchange: "NYSE", why: "The bank every banking recruit should be able to talk about for five minutes." },
     { symbol: "ACN",  name: "Accenture", exchange: "NYSE", why: "The consulting bellwether. Its bookings tell you how clients feel about spending." },
-    { symbol: "DE",   name: "Deere", exchange: "NYSE", why: "Midwest industrial. Farm income, tariffs, and rates all show up here." },
+    { symbol: "GOOG", name: "Google", exchange: "NASDAQ", why: "Search, YouTube, and cloud under one roof. A read on ad spending and the AI race." },
     { symbol: "LLY",  name: "Eli Lilly", exchange: "NYSE", why: "Indiana's largest company and the GLP-1 story." }
   ]
 };
 
 const BRIEF = {
-  mode: "sample",
-  asOf: "2026-10-16",
-  retrievedAt: "2026-10-16T16:30:00-04:00",
-  priceType: "close",
+  mode: "live",
+  asOf: "2026-10-28",
+  retrievedAt: "2026-10-28T11:45:00-04:00",
+  priceType: "intraday",
   companies: {
     NVDA: {
       closes: [
-        { date: "2026-10-12", close: 100.00 },
-        { date: "2026-10-13", close: 101.40 },
-        { date: "2026-10-14", close: 99.80 },
-        { date: "2026-10-15", close: 103.10 },
-        { date: "2026-10-16", close: 104.20 }
+        { date: "2026-10-21", close: 221.97 },
+        { date: "2026-10-22", close: 212.21 },
+        { date: "2026-10-23", close: 210.96 },
+        { date: "2026-10-26", close: 216.00 },
+        { date: "2026-10-27", close: 217.94 }
       ],
-      latest: null,
-      priceSource: "https://example.com/sample",
+      latest: { date: "2026-10-28", time: "11:42 AM ET", price: 217.66 },
+      priceSource: "https://stockanalysis.com/stocks/nvda/history/",
       news: [
-        { date: "2026-10-15", headline: "Sample headline. Run the refresh-brief agent to replace this.", source: "Sample", url: "https://example.com/sample", why: "Sample. The agent writes one plain sentence here on why the item matters to the stock." }
+        { date: "2026-10-28", headline: "OpenAI Turns to Google AI Chips to Diversify Beyond Nvidia", source: "TipRanks", url: "https://www.tipranks.com/news/openai-turns-to-google-ai-chips-to-diversify-beyond-nvidia", why: "A big Nvidia customer plans to buy rival chips too, though the report says OpenAI is not expected to stop buying Nvidia hardware." },
+        { date: "2026-10-28", headline: "Voice AI in vogue: Nvidia releases new open transcription model", source: "TechCrunch", url: "https://techcrunch.com/2026/10/28/voice-ai-in-vogue-nvidia-releases-new-open-transcription-model/", why: "A free, open speech-to-text model keeps developers building on Nvidia's software, but it is a small product, not a revenue driver." }
       ],
-      upcoming: [
-        { date: "2026-10-28", event: "Sample event (replace by refreshing)", source: "Sample", url: "https://example.com/sample" }
-      ]
+      upcoming: []
     },
     JPM: {
       closes: [
-        { date: "2026-10-12", close: 100.00 },
-        { date: "2026-10-13", close: 99.30 },
-        { date: "2026-10-14", close: 98.90 },
-        { date: "2026-10-15", close: 98.20 },
-        { date: "2026-10-16", close: 97.60 }
+        { date: "2026-10-21", close: 335.19 },
+        { date: "2026-10-22", close: 336.54 },
+        { date: "2026-10-23", close: 331.58 },
+        { date: "2026-10-26", close: 334.04 },
+        { date: "2026-10-27", close: 335.79 }
       ],
-      latest: null,
-      priceSource: "https://example.com/sample",
+      latest: { date: "2026-10-28", time: "11:39 AM ET", price: 339.20 },
+      priceSource: "https://stockanalysis.com/stocks/jpm/history/",
       news: [
-        { date: "2026-10-14", headline: "Sample headline. Run the refresh-brief agent to replace this.", source: "Sample", url: "https://example.com/sample", why: "Sample." }
+        { date: "2026-10-22", headline: "J.P. Morgan Asset Management Expands Access to Its Tokenized Money Market Funds on Solana", source: "PR Newswire", url: "https://www.prnewswire.com/news-releases/jp-morgan-asset-management-expands-access-to-its-tokenized-money-market-funds-on-solana-302917188.html", why: "Shows the bank pushing its cash products onto more blockchain networks, a small but visible step in tokenized finance." }
       ],
       upcoming: []
     },
     ACN: {
       closes: [
-        { date: "2026-10-12", close: 100.00 },
-        { date: "2026-10-13", close: 100.20 },
-        { date: "2026-10-14", close: 99.90 },
-        { date: "2026-10-15", close: 100.10 },
-        { date: "2026-10-16", close: 100.05 }
+        { date: "2026-10-21", close: 240.26 },
+        { date: "2026-10-22", close: 258.74 },
+        { date: "2026-10-23", close: 249.37 },
+        { date: "2026-10-26", close: 247.23 },
+        { date: "2026-10-27", close: 235.16 }
       ],
-      latest: null,
-      priceSource: "https://example.com/sample",
-      news: [],
-      upcoming: [
-        { date: "2026-10-22", event: "Sample event (replace by refreshing)", source: "Sample", url: "https://example.com/sample" }
-      ]
-    },
-    DE: {
-      closes: [
-        { date: "2026-10-12", close: 100.00 },
-        { date: "2026-10-13", close: 102.50 },
-        { date: "2026-10-14", close: 101.80 },
-        { date: "2026-10-15", close: 103.90 },
-        { date: "2026-10-16", close: 102.70 }
-      ],
-      latest: null,
-      priceSource: "https://example.com/sample",
+      latest: { date: "2026-10-28", time: "11:42 AM ET", price: 245.28 },
+      priceSource: "https://stockanalysis.com/stocks/acn/history/",
       news: [
-        { date: "2026-10-13", headline: "Sample headline. Run the refresh-brief agent to replace this.", source: "Sample", url: "https://example.com/sample", why: "Sample." }
+        { date: "2026-10-27", headline: "Accenture awarded $151.46M Air Force task order", source: "TipRanks (TheFly)", url: "https://www.tipranks.com/news/the-fly/accenture-awarded-151-46m-air-force-task-order-thefly-news", why: "A multi-year government contract adds steady revenue, though it is small next to the company's total sales." },
+        { date: "2026-10-26", headline: "Accenture price target raised to $252 from $210 at Wells Fargo", source: "TipRanks (TheFly)", url: "https://www.tipranks.com/news/the-fly/accenture-price-target-raised-to-252-from-210-at-wells-fargo-thefly-news", why: "An analyst sees AI helping Accenture eventually but keeps a neutral rating, saying gains may take time." },
+        { date: "2026-10-21", headline: "Accenture downgraded to Neutral from Outperform at Baird", source: "TipRanks (TheFly)", url: "https://www.tipranks.com/news/the-fly/accenture-downgraded-to-neutral-from-outperform-at-baird-thefly-news", why: "Baird says the stock has more than doubled since June, so the good news looks priced in." }
       ],
       upcoming: []
     },
-    LLY: {
+    GOOG: {
       closes: [
-        { date: "2026-10-12", close: 100.00 },
-        { date: "2026-10-13", close: 98.70 },
-        { date: "2026-10-14", close: 99.60 },
-        { date: "2026-10-15", close: 101.30 },
-        { date: "2026-10-16", close: 102.90 }
+        { date: "2026-10-21", close: 330.95 },
+        { date: "2026-10-22", close: 320.76 },
+        { date: "2026-10-23", close: 317.28 },
+        { date: "2026-10-26", close: 314.19 },
+        { date: "2026-10-27", close: 316.83 }
       ],
-      latest: null,
-      priceSource: "https://example.com/sample",
+      latest: { date: "2026-10-28", time: "11:42 AM ET", price: 320.41 },
+      priceSource: "https://stockanalysis.com/stocks/goog/history/",
       news: [
-        { date: "2026-10-16", headline: "Sample headline. Run the refresh-brief agent to replace this.", source: "Sample", url: "https://example.com/sample", why: "Sample." }
+        { date: "2026-10-28", headline: "Video: Alphabet up ahead of earnings after report of OpenAI buying AI chips", source: "TipRanks (TheFly)", url: "https://www.tipranks.com/news/the-fly/video-alphabet-up-ahead-of-earnings-after-report-of-openai-buying-ai-chips-thefly-news", why: "A report that OpenAI will buy Google's AI chips lifted the shares into tonight's earnings." },
+        { date: "2026-10-27", headline: "Cloud growth, AI spending in focus for Alphabet", source: "TipRanks (TheFly)", url: "https://www.tipranks.com/news/the-fly/cloud-growth-ai-spending-in-focus-for-alphabet-thefly-news", why: "Analysts expect cloud strength but worry about heavy AI spending; consensus is EPS of $3.00 and revenue of $127.83B." },
+        { date: "2026-10-27", headline: "Google's Genie 4 world model adds audio, more realistic worlds, and real-time steering", source: "TechCrunch", url: "https://techcrunch.com/2026/10/27/googles-genie-4-world-model-adds-audio-more-realistic-worlds-and-real-time-steering/", why: "A research preview that shows Google's AI progress, but no direct revenue effect yet." }
       ],
       upcoming: [
-        { date: "2026-10-30", event: "Sample event (replace by refreshing)", source: "Sample", url: "https://example.com/sample" }
+        { date: "2026-10-28", event: "Alphabet Q3 2026 earnings, after the market close; call at 4:30 PM ET", source: "TipRanks (TheFly)", url: "https://www.tipranks.com/news/the-fly/cloud-growth-ai-spending-in-focus-for-alphabet-thefly-news" }
+      ]
+    },
+    LLY: {
+      closes: [
+        { date: "2026-10-21", close: 1270.75 },
+        { date: "2026-10-22", close: 1306.69 },
+        { date: "2026-10-23", close: 1273.46 },
+        { date: "2026-10-26", close: 1279.14 },
+        { date: "2026-10-27", close: 1281.91 }
+      ],
+      latest: { date: "2026-10-28", time: "11:42 AM ET", price: 1295.41 },
+      priceSource: "https://stockanalysis.com/stocks/lly/history/",
+      news: [
+        { date: "2026-10-28", headline: "Lilly's retatrutide delivered greater A1C reduction and more than double the weight loss of Ozempic's highest approved dose in head-to-head trial", source: "PR Newswire (Eli Lilly)", url: "https://www.prnewswire.com/news-releases/lillys-retatrutide-delivered-greater-a1c-reduction-and-more-than-double-the-weight-loss-of-ozempics-highest-approved-dose-in-head-to-head-trial-302921328.html", why: "Positive Phase 3 results for Lilly's next obesity and diabetes drug, though side-effect dropouts were higher than Ozempic's." },
+        { date: "2026-10-27", headline: "Eli Lilly names Ilya Yuffa as president, Lilly Global Markets", source: "TipRanks (TheFly)", url: "https://www.tipranks.com/news/the-fly/eli-lilly-names-ilya-yuffa-as-president-lilly-global-markets-thefly-news", why: "Lilly merges its U.S. and international businesses from January 2027 as its international chief retires." },
+        { date: "2026-10-26", headline: "Lilly declares fourth-quarter 2026 dividend", source: "PR Newswire (Eli Lilly)", url: "https://www.prnewswire.com/news-releases/lilly-declares-fourth-quarter-2026-dividend-302919496.html", why: "A $1.73 per share dividend, payable December 10, 2026 to holders of record November 13, 2026." }
+      ],
+      upcoming: [
+        { date: "2026-10-29", event: "Eli Lilly Q3 2026 earnings (date from a secondary site, not confirmed on Lilly's IR page)", source: "StockAnalysis", url: "https://stockanalysis.com/stocks/lly/" }
       ]
     }
   }
 };
 
 const CHANGELOG = [
+  {
+    date: "2026-10-28",
+    summary: [
+      "NVDA 221.97 to 217.94 (-1.8%) on reports OpenAI will also buy Google AI chips (closes Oct 21 to Oct 27).",
+      "JPM 335.19 to 335.79 (+0.2%), no major news (only a tokenized money market fund expansion).",
+      "ACN 240.26 to 235.16 (-2.1%) after a Baird downgrade on valuation and a Wells Fargo target raise.",
+      "GOOG 330.95 to 316.83 (-4.3%) into Q3 earnings after the close on Oct 28.",
+      "LLY 1270.75 to 1281.91 (+0.9%); Oct 28 retatrutide head-to-head diabetes trial result vs Ozempic, earnings Oct 29.",
+      "Latest intraday prices on Oct 28 around 11:40 AM ET: NVDA 217.66, JPM 339.20, ACN 245.28, GOOG 320.41, LLY 1295.41.",
+      "Calendar added: GOOG earnings Oct 28 and LLY earnings Oct 29. NVDA, JPM and ACN have no confirmed event in the next 14 days.",
+      "Missing: no FOMC or jobs-report items recorded; the FOMC meeting is Oct 27-28 per the Fed calendar and the BLS jobs report is Nov 6, but the page has no market-wide slot and neither was added to a ticker.",
+      "Missing: Reuters, Barron's, CNBC, Business Insider, Investopedia and Bloomberg pages could not be opened, so news is thinner than it could be (JPM 1 item, NVDA 2). Items older than 7 days were skipped.",
+      "Removed the old sample data, including the orphan DE block."
+    ],
+    note: "Verify by hand: (1) Oct 28 prices are intraday from StockAnalysis, not closes, and the page timestamps were about 11:39 to 11:42 AM ET; retrievedAt 11:45 is approximate. (2) LLY earnings Oct 29 comes from StockAnalysis only; check Lilly's IR page. (3) NVDA next earnings reportedly Nov 17 and ACN Dec 17, both outside the window, from StockAnalysis only. (4) News dates were taken from the articles opened; all were read via TipRanks, TechCrunch or PR Newswire."
+  },
   {
     date: "2026-10-16",
     summary: [
